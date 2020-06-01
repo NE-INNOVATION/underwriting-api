@@ -35,9 +35,9 @@ jobs:
       run: |
         echo ::set-output name=repo::$(echo ${GITHUB_REPOSITORY})
         echo ::set-output name=sha_short::$(git rev-parse --short HEAD)
-        echo ::set-output name=image-name::$(echo quay.io/neinnovation/underwriting-api})
+        echo ::set-output name=image-name::$(echo quay.io/neinnovationorg/underwriting-api})
         echo ::set-output name=branch::${GITHUB_REF#refs/heads/}
-        echo ::set-output name=docker_repo::$(echo /neinnovation/underwriting-api) 
+        echo ::set-output name=docker_repo::$(echo /neinnovationorg/underwriting-api) 
     - name: Login to Podman
       id: login
       run:  |
