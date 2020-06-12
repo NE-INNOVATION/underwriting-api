@@ -1,33 +1,27 @@
 {
-  "name": "vehicles-api",
+  "name": "underwriting-api",
   "version": "1.0.0",
-  "description": "vehicles API to Get Put Vehicle data",
-  "main": "index.js",
+  "description": "underwriting API to run underwriting rules",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node bin/server.js"
   },
   "dependencies": {
     "@cloudnative/health-connect": "^2.1.0",
-    "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "mongodb": "^3.5.6",
     "random-number": "0.0.9"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/lrqi-project/vehicles-api.git"
+    "url": "https://github.com/NE-INNOVATION/underwriting-api.git"
   },
   "keywords": [
-    "Drivers",
+    "Underwriting",
     "API"
   ],
   "author": "Pratik",
   "license": "ISC",
-  "devDependencies": {
-    "nodemon": "^1.18.3"
-  },
   "engines": {
     "node": "10.X.X",
     "npm": "6.X.X"
