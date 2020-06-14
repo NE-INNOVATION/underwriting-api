@@ -68,6 +68,7 @@ jobs:
       uses: matt-ball/newman-action@master
       with:
         collection: postman-test.json
+        environment: postman-env.json
     - name: Scan Image
       uses: Azure/container-scan@v0
       continue-on-error: true
