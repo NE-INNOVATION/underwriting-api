@@ -5,7 +5,7 @@ name: Underwriting API - Node.js CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, dev ]
 
 jobs:
   build:
@@ -50,7 +50,7 @@ jobs:
     - name: Push Image to Github Registry
       run: |
           podman push quay.io/neinnovationorg/underwriting-api:${{ steps.extract_branch.outputs.branch }}
-    - name: OpenShift Action
+    - name: OpenShift Dev deploy
       uses: redhat-developer/openshift-actions@v2.0
       with:
         # The URL of the Openshift cluster
@@ -69,6 +69,19 @@ jobs:
       with:
         collection: postman-test.json
         environment: postman-env.json
+    - name: OpenShift Sys deploy
+      uses: redhat-developer/openshift-actions@v2.0
+      with:
+        # The URL of the Openshift cluster
+        openshift_server_url: ${{ secrets.OPENSHIFT_SERVER_URL }}
+        # JSON with values to connect to the Openshift cluster
+        parameters: '{"username": "${{ secrets.OPENSHIFT_USER }}", "acceptUntrustedCerts": "true", "password":"${{ secrets.OPENSHIFT_PASSWORD }}"}'
+        # Oc command to be executed
+        cmd: |
+          'version'
+          'project sys'
+          'tag --source=docker quay.io/neinnovationorg/underwriting-api:${{ steps.extract_branch.outputs.branch }} sys/underwriting-api:${{ steps.extract_branch.outputs.branch }}'
+          'rollout latest dc/underwriting-api'
     - name: Scan Image
       uses: Azure/container-scan@v0
       continue-on-error: true
