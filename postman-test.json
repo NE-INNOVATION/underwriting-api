@@ -17,7 +17,7 @@
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"pm.test(\"Body is correct\", function () {\r",
-							"    pm.response.to.have.body(\"{\\\"status\\\":\\\"UP\\\",\\\"check1s\\\":[]}\");\r",
+							"    pm.response.to.have.body(\"{\\\"status\\\":\\\"UP\\\",\\\"checks\\\":[]}\");\r",
 							"});"
 						],
 						"type": "text/javascript"
