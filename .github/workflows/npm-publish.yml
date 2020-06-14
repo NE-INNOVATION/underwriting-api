@@ -2,7 +2,7 @@ name: newmanrun
 
 on:
   push:
-    branches: [ master ]
+    branches: [ dev ]
 
 jobs:
   newman:
