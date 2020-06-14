@@ -25,6 +25,7 @@ module.exports = () => {
   app.use("/live", health.LivenessEndpoint(healthcheck));
   app.use("/ready", health.ReadinessEndpoint(healthcheck));
   app.use("/health", health.HealthEndpoint(healthcheck));
+  app.use("/liveness", health.LivenessEndpoint(healthcheck));
 
   app.use("/api/underwriting/:quoteId/:pd", (req, res) => {
     if (req.params.pd === "1") {
