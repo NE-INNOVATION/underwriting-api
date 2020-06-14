@@ -1,0 +1,14 @@
+{
+	"id": "68b7c03f-2600-42da-a647-a81b292ccb7b",
+	"name": "development",
+	"values": [
+		{
+			"key": "serviceUrl",
+			"value": "http://underwriting-api-development.apps.openshift.ne-innovation.com/",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2020-06-14T20:54:50.826Z",
+	"_postman_exported_using": "Postman/7.26.0"
+}
