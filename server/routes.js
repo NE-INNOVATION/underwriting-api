@@ -1,14 +1,5 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const health = require("@cloudnative/health-connect");
-const router = express.Router();
-var rn = require("random-number");
-
-var gen = rn.generator({
-  min: 1,
-  max: 5,
-  integer: true,
-});
 
 let quotes = {};
 
@@ -35,13 +26,24 @@ module.exports = () => {
   app.use("/ready", health.ReadinessEndpoint(healthcheck));
   app.use("/health", health.HealthEndpoint(healthcheck));
 
-  app.use("/api/underwriting/:quoteId", (req, res) => {
-    quotes[req.params.quoteId] = (quotes[req.params.quoteId] || gen()) + 1;
-    if (quotes[req.params.quoteId] % 3 == 0) {
-      res.send('RATE_SUCCESS' + JSON.stringify(quotes));
+  app.use("/api/underwriting/:quoteId/:pd", (req, res) => {
+    if (req.params.pd === "1") {
+      quotes[req.params.quoteId] = { code: "UWREF" };
+      res.send({
+        code: "UWREF",
+      });
+    } else if (
+      quotes[req.params.quoteId] !== undefined &&
+      req.params.pd !== "1"
+    ) {
       quotes[req.params.quoteId] = undefined;
-    }else{
-      res.send('UWREF' + JSON.stringify(quotes));
+      res.send({
+        code: "UWAPPR",
+      });
+    } else {
+      res.send({
+        code: "RATE_SUCC",
+      });
     }
   });
 
