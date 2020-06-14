@@ -1,0 +1,57 @@
+{
+	"info": {
+		"_postman_id": "78d9a55c-7d9c-483f-8b0b-bbdb09277757",
+		"name": "neinnovation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "policy-issue-running",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "636180b1-7e52-4f90-98f8-9ec168695381",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Body is correct\", function () {\r",
+							"    pm.response.to.have.body(\"{\\\"status\\\":\\\"UP\\\",\\\"checks\\\":[]}\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://underwriting-api-development.apps.openshift.ne-innovation.com/liveness",
+					"protocol": "http",
+					"host": [
+						"underwriting-api-development",
+						"apps",
+						"openshift",
+						"ne-innovation",
+						"com"
+					],
+					"path": [
+						"live"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"id": "d4af0491-f29a-40ef-82b1-57b9e60ac307",
+			"value": "",
+			"type": "string",
+			"disabled": true
+		}
+	],
+	"protocolProfileBehavior": {}
+}
