@@ -62,6 +62,12 @@ jobs:
           'version'
           'project development'
           'tag --source=docker quay.io/neinnovationorg/underwriting-api:${{ steps.extract_branch.outputs.branch }} development/underwriting-api:${{ steps.extract_branch.outputs.branch }}'
+          'rollout latest dc/underwriting-api'
+          'rollout status dc/underwriting-api'
+    - name: Run Test cases
+      uses: matt-ball/newman-action@master
+      with:
+        collection: postman-test.json
     - name: Scan Image
       uses: Azure/container-scan@v0
       continue-on-error: true
