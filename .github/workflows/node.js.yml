@@ -38,7 +38,7 @@ jobs:
         echo ::set-output name=image-name::$(echo quay.io/neinnovationorg/underwriting-api})
         echo ::set-output name=branch::${GITHUB_REF#refs/heads/}
         echo ::set-output name=docker_repo::$(echo /neinnovationorg/underwriting-api) 
-    - name: Login to Podman
+    - name: Login to Quay
       id: login
       run:  |
          echo ${{ steps.extract_branch.outputs.branch }}
@@ -50,6 +50,24 @@ jobs:
     - name: Push Image to Github Registry
       run: |
           podman push quay.io/neinnovationorg/underwriting-api:${{ steps.extract_branch.outputs.branch }}
+    - name: Build and push Docker images
+      uses: docker/build-push-action@v1.1.0
+      with:
+        username: afu174
+        password: ${{ secrets.GITHUB_TOKEN }}
+        # Server address of Docker registry. If not set then will default to Docker Hub
+        registry: docker.pkg.github.com
+        # Docker repository to tag the image with
+        repository: ne-innovation/underwriting-api/underwriting-api-${{ steps.vars.outputs.branch }}
+        # Comma-delimited list of tags. These will be added to the registry/repository to form the image's tags
+        tags: prefill-svc-api-${{ steps.vars.outputs.sha_short }}
+        tag_with_ref: false
+        tag_with_sha: false
+        # Path to the build context
+        path: .
+       # # Path to the Dockerfile (Default is '{path}/Dockerfile')
+        dockerfile: ./Dockerfile
+        push: true
     - name: OpenShift Dev deploy
       uses: redhat-developer/openshift-actions@v2.0
       with:
