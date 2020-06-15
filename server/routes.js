@@ -1,11 +1,40 @@
 const express = require("express");
 const health = require("@cloudnative/health-connect");
+const OktaJwtVerifier = require('@okta/jwt-verifier');
+const config = require('./authConfiguration.js');
 
 let quotes = {};
 
 const healthcheck = new health.HealthChecker();
 
 module.exports = () => {
+  const oktaJwtVerifier = new OktaJwtVerifier({
+    clientId: config.server.oidc.clientId,
+    issuer: config.server.oidc.issuer,
+    assertClaims: config.server.assertClaims
+  })
+
+  function authenticationRequired(req, res, next) {
+    const authHeader = req.headers.authorization || '';
+    const match = authHeader.match(/Bearer (.+)/);
+
+    if (!match) {
+      res.status(401);
+      return next('Unauthorized');
+    }
+
+    const accessToken = match[1];
+    const audience = config.server.assertClaims.aud;
+    return oktaJwtVerifier.verifyAccessToken(accessToken, audience)
+      .then((jwt) => {
+        req.jwt = jwt;
+        next();
+      })
+      .catch((err) => {
+        res.status(401).send(err.message);
+      });
+  }
+
   const app = express();
   app.set("json-spaces", 2);
   app.use(function (req, res, next) {
@@ -27,7 +56,7 @@ module.exports = () => {
   app.use("/health", health.HealthEndpoint(healthcheck));
   app.use("/liveness", health.LivenessEndpoint(healthcheck));
 
-  app.use("/api/underwriting/:quoteId/:pd", (req, res) => {
+  app.use("/api/underwriting/:quoteId/:pd",authenticationRequired,(req, res) => {
     if (req.params.pd === "1") {
       quotes[req.params.quoteId] = { code: "UWREF" };
       res.send({
