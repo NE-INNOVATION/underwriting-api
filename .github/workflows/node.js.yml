@@ -58,9 +58,9 @@ jobs:
         # Server address of Docker registry. If not set then will default to Docker Hub
         registry: docker.pkg.github.com
         # Docker repository to tag the image with
-        repository: ne-innovation/underwriting-api/underwriting-api-${{ steps.vars.outputs.branch }}
+        repository: ne-innovation/underwriting-api/underwriting-api-${{ steps.extract_branch.outputs.branch }}
         # Comma-delimited list of tags. These will be added to the registry/repository to form the image's tags
-        tags: prefill-svc-api-${{ steps.vars.outputs.sha_short }}
+        tags: prefill-svc-api-${{ steps.extract_branch.outputs.branch }}
         tag_with_ref: false
         tag_with_sha: false
         # Path to the build context
