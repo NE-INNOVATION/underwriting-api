@@ -29,9 +29,9 @@ module.exports = () => {
 
   app.use("/api/underwriting/:quoteId/:pd", (req, res) => {
     if (req.params.pd === "1") {
-      quotes[req.params.quoteId] = { code: "UWREF" };
+      quotes[req.params.quoteId] = { status: "UWREF" };
       res.send({
-        code: "UWREF",
+        status: "UWREF",
       });
     } else if (
       quotes[req.params.quoteId] !== undefined &&
@@ -39,11 +39,11 @@ module.exports = () => {
     ) {
       quotes[req.params.quoteId] = undefined;
       res.send({
-        code: "UWAPPR",
+        status: "UWAPPR",
       });
     } else {
       res.send({
-        code: "RATE_SUCC",
+        status: "RATE_SUCC",
       });
     }
   });
