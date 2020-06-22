@@ -1,8 +1,6 @@
 const express = require("express");
 const health = require("@cloudnative/health-connect");
 
-let quotes = {};
-
 const healthcheck = new health.HealthChecker();
 
 module.exports = () => {
@@ -29,17 +27,8 @@ module.exports = () => {
 
   app.use("/api/underwriting/:quoteId/:pd", (req, res) => {
     if (req.params.pd === "1") {
-      quotes[req.params.quoteId] = { status: "UWREF" };
       res.send({
         status: "UWREF",
-      });
-    } else if (
-      quotes[req.params.quoteId] !== undefined &&
-      req.params.pd !== "1"
-    ) {
-      quotes[req.params.quoteId] = undefined;
-      res.send({
-        status: "UWAPPR",
       });
     } else {
       res.send({
