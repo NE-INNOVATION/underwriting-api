@@ -26,7 +26,7 @@ module.exports = () => {
   app.use("/liveness", health.LivenessEndpoint(healthcheck));
 
   app.use("/api/underwriting/:quoteId/:pd", (req, res) => {
-    if (req.params.pd === "1") {
+    if (req.params.pd === "30") {
       res.send({
         status: "UWREF",
       });
