@@ -47,10 +47,10 @@ jobs:
     - name: Build Image using Podman
       run: |
          podman build . -t quay.io/neinnovationorg/underwriting-api:${{ steps.extract_branch.outputs.branch }}
-    - name: Push Image to Github Registry
+    - name: Push Image to Quay registry
       run: |
           podman push quay.io/neinnovationorg/underwriting-api:${{ steps.extract_branch.outputs.branch }}
-    - name: Build and push Docker images
+    - name: Build and push Images
       uses: docker/build-push-action@v1.1.0
       with:
         username: afu174
