@@ -1,5 +1,11 @@
 const express = require("express");
 const health = require("@cloudnative/health-connect");
+const winston = require('winston')
+const logger = winston.createLogger({
+  transports: [
+      new winston.transports.Console()
+  ]
+});
 
 const healthcheck = new health.HealthChecker();
 
@@ -20,17 +26,23 @@ module.exports = () => {
     next();
   });
 
+  app.use( (req, res, done) => {
+    logger.info(`app.${req.originalUrl}`);
+    done();
+  });
+
   app.use("/live", health.LivenessEndpoint(healthcheck));
   app.use("/ready", health.ReadinessEndpoint(healthcheck));
   app.use("/health", health.HealthEndpoint(healthcheck));
-  app.use("/liveness", health.LivenessEndpoint(healthcheck));
 
   app.use("/api/underwriting/:quoteId/:pd", (req, res) => {
     if (req.params.pd === "30") {
+      logger.info(`app.api.underwriting - Underwriting Referral due to PD-${req.params.pd}`)
       res.send({
         status: "UWREF",
       });
     } else {
+      logger.info(`app.api.underwriting - Underwriting Approved`)
       res.send({
         status: "RATE_SUCC",
       });
